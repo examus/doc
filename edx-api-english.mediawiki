@@ -9,8 +9,8 @@ API системы должно позволять решение следующ
 
 ==== Передача данных пользователей с LMS OpenEdX ====
 
-[[https://www.lucidchart.com/publicSegments/view/2bc35853-d69d-4a5c-8983-7d19d61c068b/image.png]]
-[[https://www.lucidchart.com/publicSegments/view/d42a6551-aa5b-43e8-a11f-c930702f0934/image.png]]
+[[File:https://www.lucidchart.com/publicSegments/view/2bc35853-d69d-4a5c-8983-7d19d61c068b/image.png]]
+[[File:https://www.lucidchart.com/publicSegments/view/d42a6551-aa5b-43e8-a11f-c930702f0934/image.png]]
 
 ====session_request_callback====
 ====Параметры прокторинга====
