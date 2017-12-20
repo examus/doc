@@ -1,0 +1,542 @@
+== API и интеграция с внешними системами ==
+
+API системы должно позволять решение следующих задач:
+# Подключение дополнительных источников данных (ЭКГ, ЭЭГ, окулографическое оборудование)
+# Передачу данных пользователей от внешних систем в систему прокторинга
+# Выгрузку данных сессии прокторинга во внешние системы
+
+
+
+==== Передача данных пользователей с LMS OpenEdX ====
+
+[[https://www.lucidchart.com/publicSegments/view/2bc35853-d69d-4a5c-8983-7d19d61c068b/image.png]]
+[[https://www.lucidchart.com/publicSegments/view/d42a6551-aa5b-43e8-a11f-c930702f0934/image.png]]
+
+====session_request_callback====
+====Параметры прокторинга====
+
+=====Необязательные параметры:=====
+
+
+{| style="border-spacing:0;width:6.4854in;"
+|- style="background-color:#f0f0f0;border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1563in;"
+|| Имя параметра
+| style="color:#333333;" | Значение
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | contact_us
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | ссылка на страницу/форму обратной связи
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;color:#333333;" | faq
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | ссылка на часто задаваемые вопросы
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | online_proctoring_rules
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | ссылка на правила прокторинг сервиса
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | tech_requirements
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | ссылка на требования к аппаратному/программному обеспечению
+|-
+|}
+=====Обязательные параметры:=====
+
+
+{| style="border-spacing:0;width:6.4854in;"
+|- style="background-color:#f0f0f0;border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1563in;"
+|| Имя параметра
+| style="color:#333333;" | Значение
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | crypto_key
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | ключ шифрования (16 или 24 символа)
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | exam_register_endpoint
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | URL по которому EDX запрашивает код прокторинг сессии
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | exam_sponsor
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | спонсор прокторинг экзамена
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;color:#333333;" | organization
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | название организации, предоставляющей прокторинг сервис
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | secret_key
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | секретный ключ (24 символа)
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | secret_key_id
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | ID секретного ключа (возможно, используется для идентификации клиентов на стороне прокторинга)
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | software_download_url
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | ссылка для скачивания прокторинг-клиента
+|-
+|}
+=====Инициализация сессии=====
+
+Для установления сессии с прокторинг сервисом, EDX генерирует уникальный код экзамена и отсылает его POST запросом вместе с другими данными об экзамене и студенте.
+
+Пример кода экзамена: F5FC0503-278E-48BD-9120-2C91C86BDA8A
+
+=====Параметры запроса от EDX к прокторингу:=====
+
+
+{| style="border-spacing:0;width:6.4854in;"
+|- style="background-color:#f0f0f0;border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1563in;"
+|| Имя параметра
+| style="color:#333333;" | Значение
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;color:#183691;" | examCode
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | уникальный ключ экзамена EDX
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;color:#183691;" | organization
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | название организации, предоставляющей прокторинг сервис
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;color:#183691;" | duration
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | длительность экзамена по времени (в минутах)
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;color:#183691;" | reviewedExam
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | boolean, всегда false для прокторинг экзамена
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;color:#183691;" | reviewerNotes
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | комбинация Exam Policy (для всех студентов) с исключениями для конкретного студента
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;color:#183691;" | examPassword
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | ключ экзамена EDX зашифрованный с помощью crypto_key (алгоритм шифрования согласовывается с обеих сторон)
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;color:#183691;" | examSponsor
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | спонсор прокторинг экзамена
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;color:#183691;" | examName
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | название экзамена (например Final Exam)
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;color:#183691;" | ssiProduct
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | константа со значением 'rp-now'
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;color:#183691;" | examUrl
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | ссылка на экзамен EDX
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;color:#183691;" | orgExtra
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | дополнительная информация
+
+{"examStartDate": dateTime, "examEndDate": dateTime, "noOfStudents": integer, "examID": integer, "courseID": string, "firstName": string, "lastName": string}
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | orgExtra['examStartDate']
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | дата и время начала экзамена
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | orgExtra['examEndDate']
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | дата и время окончания экзамена
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | orgExtra['noOfStudents']
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | количество студентов (всегда 1)
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | orgExtra['examID']
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | ID экзамена в базе EDX
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | orgExtra['courseID']
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | ID курса (пример: Millionlights/ex12007/2015)
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | orgExtra['firstName']
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | имя студента
+|-
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | orgExtra['lastName']
+| style="border:0.75pt solid #dddddd;padding-top:0.0729in;padding-bottom:0.0729in;padding-left:0.1146in;padding-right:0.1146in;" | фамилия студента
+|-
+|}
+=====Пример:=====
+
+POST api/v1/integration/npoed/
+<pre>
+{
+    "examCode":"F5FC0503-278E-48BD-9120-2C91C86BDA8A",
+    "organization":"ITMO",
+    "duration":120,
+    "reviewedExam":false,
+    "reviewerNotes":"",
+    "examPassword":"5bh78-anvjnDG5jjfb#svsAjdvsSd",
+    "examSponsor":"",
+    "examName":"Final Exam",
+    "ssiProduct":'rp-now',
+    "examUrl":"https://lms.npoed.org/courses/some_course_id?sdfhsdfhsdjhihnskdjfnkjnkhjdnfhsnkjnh",
+    "orgExtra":{
+        "examStartDate":"2015-10-10 12:10:34",
+        "examEndDate":"2015-10-10 14:10:34",
+        "noOfStudents":1,
+        "examID":5356,
+        "courseID":"some_course_id",
+        "firstName":"John",
+        "lastName":"Johnson",
+
+    }
+}
+</pre>
+В ответ EDX ожидает ID сессии (строка/хэш с любым значением), которое будет сохранено и использовано на этапе финализации экзамена.
+
+
+===proctoring_launch_callback===
+====Старт экзамена====
+
+После того, как студент завершил идентификацию на прокторинге, прокторинг посылает EDX запрос с кодом экзамена, после чего у студента появляется возможность начать прохождение.
+
+=====Вызов API:=====
+
+GET /api/edx_proctoring/proctoring_launch_callback/start_exam/{examCode}
+
+=====Пример:=====
+
+GET /api/edx_proctoring/proctoring_launch_callback/start_exam/F5FC0503-278E-48BD-9120-2C91C86BDA8A
+
+Возвращает HTML страницу во встроенный браузер прокторинг приложения. Страница содержит ссылки с правилами использования, FAQ и т.д.
+
+Статус экзамена при этом устанавливается в ready_to_start
+
+
+====proctoring_poll_status====
+=====Опрос статуса=====
+
+После отправки запроса, прокторинг периодически опрашивает статус экзамена EDX и запускает/останавливает сессию (или другие действия) в зависимости от полученного значения.
+
+=====Вызов API:=====
+
+GET /api/edx_proctoring/proctoring_poll_status/{examCode}
+
+======Пример:======
+
+GET /api/edx_proctoring/proctoring_poll_status/F5FC0503-278E-48BD-9120-2C91C86BDA8A
+
+======Ответ:======
+
+{"status": %status_value%}
+
+=====Возможные значения статуса:=====
+
+{|
+| eligible || the student is eligible to decide if he/she wants to persue credit
+|-
+| created || the attempt record has been created, but the exam has not yet been started
+|-
+| ready_to_start || the attempt is ready to start but requires user to acknowledge that he/she wants to start the exam
+|-
+| started || the student has started the exam and is in the process of completing the exam
+|-
+| ready_to_submit || the student has completed the exam
+|}
+
+
+
+
+Статусы ниже рассматриваются в контексте 'completed' состояния
+
+Не допускается изменение значения на указанные выше
+
+{|
+| declined || the student declined to take the exam as a proctored exam
+|-
+| timed_out || the exam has timed out
+|-
+| submitted || the student has submitted the exam for proctoring review
+|-
+| verified || the exam has been verified and approved
+|-
+| rejected || the exam has been rejected
+|-
+| not_reviewed || the exam was not reviewed
+|-
+| error || the exam is believed to be in error
+|}
+
+
+
+====close_exams====
+
+===== Завершение экзамена проктором =====
+Request:
+
+<pre>
+GET /api/edx_proctoring/v1/proctored_exam/attempt/{exam_code}
+</pre>
+
+Response:
+
+<pre>
+200 OK
+</pre>
+
+
+====Завершение экзамена====
+
+Экзамен может завершиться по истечению времени, либо если студент досрочно завершает прохождение.
+
+Прокторинг отслеживает статус. Фактически экзамен завершен при получении статуса submitted. В этом состоянии EDX ожидает от прокторинга данные о ходе экзамена.
+
+При получении статуса submitted прокторинг посылает POST запрос с данными. 
+
+Важно: Данные обязательно должны содержать параметр ssiRecordLocator, значением которого является код сессии прокторинга, полученный EDX на первом этапе
+
+
+{| style="border-spacing:0;width:6.4854in;"
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| Имя параметра
+| style="color:#333333;" | Значение
+| style="color:#333333;" | Тип
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+| style="color:#333333;" | examDate
+|| Дата экзамена формат
+|| формат 
+
+Jul 15 2015 1:13AM
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+| style="color:#333333;" | examProcessingStatus
+|| Статус процесса экзамена. (Окончен или нет)
+| style="color:#333333;" | строка
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+| style="color:#333333;" | examTakerEmail
+|| Эмеил студента
+| style="color:#333333;" | эмеил
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+| style="color:#333333;" | examTakerFirstName
+|| Имя студента
+| style="color:#333333;" | строка
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+| style="color:#333333;" | examTakerLastName
+|| Фамилия студента
+| style="color:#333333;" | строка
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+| style="color:#333333;" | keySetVersion
+| style="color:#000000;" | 
+| style="color:#000000;" | 
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| examApiData[]
+|| данные идентичные получаемым при инициализации сессии
+|| json массив
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+| style="color:#333333;" | overAllComments
+| style="color:#000000;" | 
+| style="color:#000000;" | 
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+| style="color:#333333;" | reviewStatus
+|| Статус прокторинга. Доступниые значения - 'Clean', 'Rules Violation', 'Not Reviewed', 'Suspicious'
+| style="color:#333333;" | строка
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| userPhotoBase64String
+| style="color:#000000;" | 
+| style="color:#000000;" | 
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+| style="color:#333333;" | videoReviewLink
+|| Ссылка на видео ревью
+| style="color:#333333;" | урл
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+| style="color:#333333;" | examMetaData
+|| Данные о экзамене
+|| json массив
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| examMetaData[examCode]
+|| Код экзамена
+| style="color:#333333;" | строка
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| examMetaData[examName]
+| style="color:#333333;" | Название
+| style="color:#333333;" | строка
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| examMetaData[examSponsor]
+| style="color:#333333;" | Спонсор
+| style="color:#333333;" | строка
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| examMetaData[organization]
+| style="color:#333333;" | организация
+| style="color:#333333;" | строка
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| examMetaData[reviewedExam]
+|| Проревьювеный ли экзамен
+|| "True" или "False"
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| examMetaData[reviewerNotes]
+|| Заметки ревьювера
+| style="color:#333333;" | строка
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| examMetaData[simulatedExam]
+|| Симуляция экзамена
+|| "True" или "False"
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| examMetaData[ssiExamToken]
+| style="color:#000000;" | 
+| style="color:#000000;" | 
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| examMetaData[ssiProduct]
+| style="color:#000000;" | 
+| style="color:#000000;" | 
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| examMetaData[ssiRecordLocator]
+|| ID сессии
+| style="color:#333333;" | строка
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+| style="color:#333333;" | desktopComments
+|| Комментарии прокторинга в процессе наблюдения за экраном экзаменуемого
+|| json массив
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| desktopComments[comments]
+|| Текст комментария
+| style="color:#333333;" | строка
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| desktopComments[duration]
+|| Продолжительность события
+|| int - минут
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| desktopComments[eventFinish]
+|| Момент окончания события
+|| int - минута с момента старта экзамена
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| desktopComments[eventStart]
+|| Момент начала события
+|| in -минута с момента старта экзамена
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+|| desktopComments[eventStatus]
+|| Статус события
+|| "Suspicious", "Rules Violation", "Clean"
+|- style="border:0.75pt solid #000000;padding:0.0729in;"
+| style="color:#333333;" | webCamComments
+|| Комментарии прокторинга в процессе наблюдения за экзаменуемым посредством web-камеры
+|| json массив
+
+Содержимое идентично desktopComments
+|-
+|}
+
+
+Параметры запроса прокторинга к EDX (пример данных взят от Software Secure, может быть скорректирован под существующие АПИ прокторинга):
+<pre>
+{  
+   "examDate":"",
+   "examProcessingStatus":"Review Completed",
+   "examTakerEmail":"",
+   "examTakerFirstName":"John",
+   "examTakerLastName":"Doe",
+   "keySetVersion":"",
+   "examApiData":{  
+      "duration":exam.duration,
+      "examCode":exam.examCode,
+      "examName":exam.examName,
+      "examPassword":exam.examPassword,
+      "examSponsor":exam.examSponsor,
+      "examUrl":"http://localhost:8000/api/edx_proctoring/proctoring_launch_callback/start_exam/4d07a01a-1502-422e-b943-93ac04dc6ced",
+      "orgExtra":{  
+         "courseID":exam.courseId,
+         "examEndDate":exam.examEndDate,
+         "examID":exam.examId,
+         "examStartDate":exam.examStartDate,
+         "noOfStudents":exam.noOfStudents
+      },
+      "organization":exam.organization,
+      "reviewedExam":exam.reviewedExam,
+      "reviewerNotes":exam.reviewerNotes,
+      "ssiProduct":"rp-now"
+   },
+   "overAllComments":"",
+   "reviewStatus":passing_review_status   [  
+      0
+   ],
+   "userPhotoBase64String":"",
+   "videoReviewLink":"",
+   "examMetaData":{  
+      "examCode":request.data.get('attempt_code'),
+      "examName":exam.examName,
+      "examSponsor":exam.examSponsor,
+      "organization":exam.organization,
+      "reviewedExam":"True",
+      "reviewerNotes":"Closed Book",
+      "simulatedExam":"False",
+      "ssiExamToken":"",
+      "ssiProduct":"rp-now",
+      "ssiRecordLocator":exam.generate_key()
+   },
+   "desktopComments":[  
+      {  
+         "comments":"Browsing other websites",
+         "duration":88,
+         "eventFinish":88,
+         "eventStart":12,
+         "eventStatus":"Suspicious"
+      },
+
+   ],
+   "webCamComments":[  
+      {  
+         "comments":"Photo ID not provided",
+         "duration":796,
+         "eventFinish":796,
+         "eventStart":0,
+         "eventStatus":"Suspicious"
+      }
+   ]
+}</pre>
+
+=====Статусы прокторинга=====
+
+======Текущий вариант======
+{|
+|Статус||Значение|| Результат
+|-
+|Clean|| No alerts, identification ok|| Verified
+|-
+|Rules Violation|| Some alerts, identification ok || Verified
+|-
+|Suspicious|| Rejected by proctor|| Rejected
+|-
+|Not Reviewed|| Technical problems; Rejected identification || Rejected
+|}
+
+======Планируемый вариант======
+{|
+|Статус||Значение|| Результат
+|-
+|Clean|| No alerts, identification ok|| Verified
+|-
+|Suspicious|| Some alerts, identification ok || Verified
+|-
+|Rules Violation|| Rejected by proctor|| Rejected
+|-
+|Not Reviewed|| Technical problems; Rejected identification || Rejected
+|}
+
+
+====user_proctored_exams====
+=====Запрос всех курсов с proctored экзаменами на которые подписан студент, по username=====
+
+Request:
+<pre>
+[GET]  http://<EDX_URL>/api/extended/user_proctored_exams/<USERNAME>/
+</pre>
+
+Response:
+<pre>
+HTTP 200 OK
+Content-Type: application/json
+{
+    "course-v1:edX+DemoX+Demo_Course": {
+        "end": null,
+        "name": "edX Demonstration Course",
+        "uri": "http://0.0.0.0:8000/api/course_structure/v0/courses/course-v1:edX+DemoX+Demo_Course/",
+        "start": "2013-02-05T05:00:00Z",
+        "image_url": "/asset-v1:edX+DemoX+Demo_Course+type@asset+block@images_course_image.jpg",
+        "exams": [
+            {
+                "id": 1,
+                "course_id": "course-v1:edX+DemoX+Demo_Course",
+                "content_id": "block-v1:edX+DemoX+Demo_Course+type@sequential+block@07bc32474380492cb34f76e5f9d9a135",
+                "external_id": null,
+                "exam_name": "New Subsection",
+                "time_limit_mins": 30,
+                "is_proctored": true,
+                "is_practice_exam": false,
+                "is_active": true
+            },
+            {
+                "id": 2,
+                "course_id": "course-v1:edX+DemoX+Demo_Course",
+                "content_id": "block-v1:edX+DemoX+Demo_Course+type@sequential+block@385f7edb208346fc9d02254aeaae5d33",
+                "external_id": null,
+                "exam_name": "pr exam",
+                "time_limit_mins": 30,
+                "is_proctored": true,
+                "is_practice_exam": false,
+                "is_active": true
+            },
+        ],
+        "id": "course-v1:edX+DemoX+Demo_Course"
+    }
+}
+</pre>
