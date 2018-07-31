@@ -1,14 +1,14 @@
 # Интеграция Examus и Edx Ginkgo
 
 ## Установка зависимостей
-sudo /edx/bin/pip.edxapp install git+https://github.com/examus/edx-proctoring.git@ginkgo.2
-sudo /edx/bin/pip.edxapp install git+https://github.com/examus/open-edx-api-extension.git@ginkgo.2
-sudo /edx/bin/pip.edxapp install git+https://github.com/examus/npoed_multiproctoring.git#egg=npoed-multiproctoring
-sudo /edx/bin/pip.edxapp install django-dirtyfields
+ * ```sudo /edx/bin/pip.edxapp install git+https://github.com/examus/edx-proctoring.git@ginkgo.2```
+ * ```sudo /edx/bin/pip.edxapp install git+https://github.com/examus/open-edx-api-extension.git@ginkgo.2```
+ * ```sudo /edx/bin/pip.edxapp install git+https://github.com/examus/npoed_multiproctoring.git#egg=npoed-multiproctoring```
+ * ```sudo /edx/bin/pip.edxapp install django-dirtyfields```
 
-sudo /edx/bin/python.edxapp manage.py lms makemigrations npoed_multiproctoring --settings=aws
-sudo /edx/bin/python.edxapp manage.py lms migrate npoed_multiproctoring --settings=aws
-sudo /edx/bin/python.edxapp manage.py lms migrate edx_proctoring --settings=aws
+ * ```sudo /edx/bin/python.edxapp manage.py lms makemigrations npoed_multiproctoring --settings=aws```
+ * ```sudo /edx/bin/python.edxapp manage.py lms migrate npoed_multiproctoring --settings=aws```
+ * ```sudo /edx/bin/python.edxapp manage.py lms migrate edx_proctoring --settings=aws```
 
 ## Конфигурация
 Добавить в файл "lms/envs/aws.py" следующие строки.
