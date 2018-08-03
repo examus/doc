@@ -6,12 +6,12 @@
  * ```sudo /edx/bin/pip.edxapp install git+https://github.com/examus/npoed_multiproctoring.git#egg=npoed-multiproctoring```
  * ```sudo /edx/bin/pip.edxapp install django-dirtyfields```
 
- * ```sudo /edx/bin/python.edxapp manage.py lms makemigrations npoed_multiproctoring --settings=aws```
- * ```sudo /edx/bin/python.edxapp manage.py lms migrate npoed_multiproctoring --settings=aws```
- * ```sudo /edx/bin/python.edxapp manage.py lms migrate edx_proctoring --settings=aws```
+ * ```sudo /edx/bin/python.edxapp /edx/app/edxapp/edx-platform/manage.py lms makemigrations npoed_multiproctoring --settings=aws```
+ * ```sudo /edx/bin/python.edxapp /edx/app/edxapp/edx-platform/manage.py lms migrate npoed_multiproctoring --settings=aws```
+ * ```sudo /edx/bin/python.edxapp /edx/app/edxapp/edx-platform/manage.py lms migrate edx_proctoring --settings=aws```
 
 ## Конфигурация
-Добавить в файл "lms/envs/aws.py" следующие строки.
+Добавить в файл "/edx/app/edxapp/edx-platform/lms/envs/aws.py" следующие строки.
 
 ```
 ############## EXAMUS INTEGRATION ################
@@ -51,7 +51,7 @@ PROCTORING_BACKEND_PROVIDERS = {
     }
 ```
 
-## Добавить в файл "lms/urls.py" следующие строки.
+## Добавить в файл "/edx/app/edxapp/edx-platform/lms/urls.py" следующие строки.
 
 ```
 urlpatterns += (
@@ -60,7 +60,7 @@ urlpatterns += (
 
 
 
-В фалйах "lms.env.json" и "ms.env.json" в словаре FEATURES установить параметр "ENABLE_SPECIAL_EXAMS" = true:
+В фалйах "/edx/app/edxapp/lms.env.json" и "/edx/app/edxapp/cms.env.json" в словаре FEATURES установить параметр "ENABLE_SPECIAL_EXAMS" = true:
 
 "FEATURES": {
     :
@@ -70,8 +70,8 @@ urlpatterns += (
 ```
 
 ## Заменить файлы
- - cms/static/js/views/modals/course_outline_modals.js 
- - cms/templates/js/timed-examination-preference-editor.underscore
+ - /edx/app/edxapp/edx-platform/cms/static/js/views/modals/course_outline_modals.js
+ - /edx/app/edxapp/edx-platform/cms/templates/js/timed-examination-preference-editor.underscore
 на файлы из репозитория:
 `https://github.com/examus/npoed_multiproctoring/tree/4779cca51bf6b2e9a71f2c58ab34e37f009f0585/npoed_multiproctoring/static`
 
@@ -89,6 +89,6 @@ from npoed_multiproctoring import enable_npoed_multiproctoring
 ```
 
 В следующие классы и функции:
- - common/lib/xmodule/xmodule/seq_module.py : ProctoringFields
- - cms/djangoapps/contentstore/views/item.py : create_xblock_info
- - cms/djangoapps/models/settings/course_metadata.py : CourseMetadata
+ - /edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/seq_module.py : ProctoringFields
+ - /edx/app/edxapp/edx-platform/cms/djangoapps/contentstore/views/item.py : create_xblock_info
+ - /edx/app/edxapp/edx-platform/cms/djangoapps/models/settings/course_metadata.py : CourseMetadata
