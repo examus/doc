@@ -103,3 +103,5 @@ from npoed_multiproctoring import enable_npoed_multiproctoring
 Перезапустить edx:
 ``` sudo /edx/bin/supervisorctl restart edxapp: ```
 
+## Integration key
+integration key находится в файле "/edx/app/edxapp/lms.auth.json" по ключу "EDX_API_KEY"
