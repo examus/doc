@@ -92,3 +92,14 @@ from npoed_multiproctoring import enable_npoed_multiproctoring
  - /edx/app/edxapp/edx-platform/common/lib/xmodule/xmodule/seq_module.py : ProctoringFields
  - /edx/app/edxapp/edx-platform/cms/djangoapps/contentstore/views/item.py : create_xblock_info
  - /edx/app/edxapp/edx-platform/cms/djangoapps/models/settings/course_metadata.py : CourseMetadata
+ 
+
+## Включение oAuth2
+Добавить новый oAuth client:
+```sudo /edx/bin/python.edxapp /edx/bin/manage.edxapp lms --setting=aws create_oauth2_client https://kfc.examus.net https://kfc.examus.net/complete/examusedx/ confidential --client_name examus --client_id YOUR_OAUTH2_KEY --client_secret SECRET --trusted```
+
+В фалйах ```/edx/app/edxapp/lms.env.json``` и ```/edx/app/edxapp/cms.env.json``` в словаре FEATURES установить параметр "ENABLE_OAUTH2_PROVIDER" = true
+
+Перезапустить edx:
+``` sudo /edx/bin/supervisorctl restart edxapp: ```
+
