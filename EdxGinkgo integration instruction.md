@@ -72,8 +72,9 @@ urlpatterns += (
 ## Заменить файлы
  - /edx/app/edxapp/edx-platform/cms/static/js/views/modals/course_outline_modals.js
  - /edx/app/edxapp/edx-platform/cms/templates/js/timed-examination-preference-editor.underscore
-на файлы из репозитория:
-`https://github.com/examus/npoed_multiproctoring/tree/4779cca51bf6b2e9a71f2c58ab34e37f009f0585/npoed_multiproctoring/static`
+на следующие файлы:
+`https://github.com/examus/npoed_multiproctoring/blob/539c447fa999727ee28bf630ec44d128b5b943ea/npoed_multiproctoring/static/cms.static.js.views.modals.course_outline_modals.js`
+`https://github.com/examus/npoed_multiproctoring/blob/539c447fa999727ee28bf630ec44d128b5b943ea/npoed_multiproctoring/static/cms.templates.js.timed-examination-preference-editor.underscore`
 
 
 ## Добавить Сервис прокторинга
@@ -102,6 +103,17 @@ from npoed_multiproctoring import enable_npoed_multiproctoring
 
 Перезапустить edx:
 ``` sudo /edx/bin/supervisorctl restart edxapp: ```
+
+
+## Минифицировать статику и пересобрать
+```
+sudo -H -u edxapp bash
+source /edx/app/edxapp/edxapp_env
+cd /edx/app/edxapp/edx-platform
+paver update_assets cms --settings=aws
+
+python manage.py cms --settings=aws collectstatic --noinput
+```
 
 ## Integration key
 integration key находится в файле "/edx/app/edxapp/lms.auth.json" по ключу "EDX_API_KEY"
