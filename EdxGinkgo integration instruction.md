@@ -10,6 +10,12 @@
  * ```sudo /edx/bin/python.edxapp /edx/app/edxapp/edx-platform/manage.py lms migrate npoed_multiproctoring --settings=aws```
  * ```sudo /edx/bin/python.edxapp /edx/app/edxapp/edx-platform/manage.py lms migrate edx_proctoring --settings=aws```
 
+## Параметры конфигурации
+ * Экзамус предоставляет url своего сервера для интеграции. Для проверки интеграции можно указывать https://stage.examus.net
+ * Экзамус предоставляет `username` и `password` для EXAMUS_PROCTORING_AUTH
+ * Экзамус предоставляет `secret_key` и `exam_register_endpoint` для PROCTORING_BACKEND_PROVIDERS
+ * На инсталляции OpenEdx нужно активировать oAuth2 client, сообщив Экзамусу YOUR_OAUTH2_KEY и YOUR_OAUTH2_SECRET
+
 ## Конфигурация
 Добавить в файл "/edx/app/edxapp/edx-platform/lms/envs/aws.py" следующие строки.
 
@@ -32,7 +38,7 @@ PROCTORING_BACKEND_PROVIDERS = {
             "class": "edx_proctoring.backends.examus.ExamusBackendProvider",
             "options": {
                 "crypto_key": "123456789012345678901234",
-                "exam_register_endpoint": "https://kfc.examus.net/api/v1/integration/npoed/exams/",
+                "exam_register_endpoint": "https://stage.examus.net/api/v1/integration/npoed/exams/",
                 "exam_sponsor": "Examus",
                 "organization": "EXAMUS",
                 "secret_key": "0VdlELK1nkZ7isXi8myAXpYxeuf0ObyP",
@@ -41,10 +47,10 @@ PROCTORING_BACKEND_PROVIDERS = {
             },
             "settings": {
                 "LINK_URLS": {
-                    "contact_us": "https://fish.npoed.ru/feedback/",
-                    "faq": "https://fish.npoed.ru/proctoring/",
+                    "contact_us": "https://your-edx-url.com/feedback/",
+                    "faq": "https://your-edx-url.com/proctoring/",
                     "online_proctoring_rules": "{add link here}",
-                    "tech_requirements": "https://fish.npoed.ru/systemcheck/"
+                    "tech_requirements": "https://your-edx-url.com/systemcheck/"
                 }
             }
         }
@@ -97,7 +103,7 @@ from npoed_multiproctoring import enable_npoed_multiproctoring
 
 ## Включение oAuth2
 Добавить новый oAuth client:
-```sudo /edx/bin/python.edxapp /edx/bin/manage.edxapp lms --setting=aws create_oauth2_client https://kfc.examus.net https://kfc.examus.net/complete/examusedx/ confidential --client_name examus --client_id YOUR_OAUTH2_KEY --client_secret SECRET --trusted```
+```sudo /edx/bin/python.edxapp /edx/bin/manage.edxapp lms --setting=aws create_oauth2_client https://stage.examus.net https://stage.examus.net/complete/examusedx/ confidential --client_name examus --client_id YOUR_OAUTH2_KEY --client_secret YOUR_OAUTH2_SECRET --trusted```
 
 В фалйах ```/edx/app/edxapp/lms.env.json``` и ```/edx/app/edxapp/cms.env.json``` в словаре FEATURES установить параметр "ENABLE_OAUTH2_PROVIDER" = true
 
